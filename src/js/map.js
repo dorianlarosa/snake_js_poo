@@ -9,7 +9,6 @@ export default class Map {
         this.height = this.canvas.height;
     }
 
-
     draw() {
         this.ctx.fillStyle = this.backgroundcolor;
         this.ctx.fillRect(0, 0, this.width, this.height);

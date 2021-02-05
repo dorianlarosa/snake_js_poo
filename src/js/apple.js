@@ -1,12 +1,9 @@
-// // apple
 import imgApple from '../images/apple.png';
 let image = new Image();
 image.src = imgApple;
 
 export default class Apple {
     constructor(map) {
-        console.log(map);
-
         this.canvas = map.canvas;
         this.ctx = map.ctx;
         this.image = image;
@@ -20,14 +17,9 @@ export default class Apple {
 
     }
 
-
     get getPosition() {
         return this.position;
     }
-
-    // set setRandomPosition(snakePosition) {
-    //     return this.position;
-    // }
 
     draw() {
         this.ctx.drawImage(this.image, this.position.x * this.gridSize, this.position.y * this.gridSize, this.gridSize, this.gridSize);

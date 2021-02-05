@@ -2,6 +2,9 @@ import Map from "../js/map.js"
 import Apple from "../js/apple.js"
 import Snake from "../js/snake.js"
 
+const eventLoose = new Event('loose');
+
+
 export default class Game {
 
 
@@ -16,14 +19,6 @@ export default class Game {
 
     }
 
-    hideGameOverPopUp() {
-        document.querySelector('.container-popup__game-over').classList.add('hide');
-    }
-
-    showGameOverPopUp() {
-        document.querySelector('.container-popup__game-over').classList.remove('hide');
-    }
-
     get getSpeed() {
         return this.speed;
     }
@@ -31,10 +26,7 @@ export default class Game {
         this.speed = value;
     }
 
-    
-
     run() {
-        this.hideGameOverPopUp();
         requestAnimationFrame(this.frame.bind(this));
         window.addEventListener('keydown', (e) => this.snake.addNextMove(e))
     }
@@ -44,16 +36,21 @@ export default class Game {
         this.ctx.font = "40px sans-serif";
         this.ctx.textBaseline = "top";
         this.ctx.fillText(this.score, this.map.getGridSize, this.map.getGridSize);
-    };
+    }
 
     frame() {
         if (!this.gameover()) {
+
             this.snake.changeDirection();
             this.snake.updateSnakePosition(this.apple.getPosition);
-            if (this.snake.checkSnakeEatApple(this.apple.getPosition)) {
+
+            let eatApple = this.snake.checkSnakeEatApple(this.apple.getPosition);
+
+            if (eatApple) {
                 this.apple.setRandomPosition(this.snake.getPosition);
                 this.score++;
             }
+
             this.map.draw();
             this.apple.draw();
             this.snake.draw();
@@ -63,7 +60,7 @@ export default class Game {
                 requestAnimationFrame(this.frame.bind(this));
             }, 1000 / this.speed);
         } else {
-            this.showGameOverPopUp();
+            window.dispatchEvent(eventLoose);
             document.getElementById('score').innerText = this.score;
         }
     }

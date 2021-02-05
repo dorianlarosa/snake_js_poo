@@ -93,55 +93,77 @@ export default class Snake {
             let currentSnakeItem = this.position[index];
             let nextItem = this.position[parseFloat(index) + 1];
             let prevItem = this.position[index - 1];
+            let image;
+
+            const directionWithUppercase = this.direction[0].toUpperCase() + this.direction.substring(1);
 
             // determine head image
             if (prevItem == undefined) {
                 switch (this.direction) {
                     case 'right':
-                        this.ctx.drawImage(imageHeadSnakeRight, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
+                        image = imageHeadSnakeRight;
                         break;
                     case 'bottom':
-                        this.ctx.drawImage(imageHeadSnakeBottom, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
+                        image = imageHeadSnakeBottom;
                         break;
                     case 'left':
-                        this.ctx.drawImage(imageHeadSnakeLeft, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
+                        image = imageHeadSnakeLeft;
                         break;
                     case 'top':
-                        this.ctx.drawImage(imageHeadSnakeTop, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
+                        image = imageHeadSnakeTop;
                         break;
                 }
+
+                this.ctx.drawImage(image, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
+
             }
 
             // determine last item body image
             else if (nextItem == undefined) {
-                if (prevItem.x > currentSnakeItem.x) {
-                    this.ctx.drawImage(imageSnakeLastBodyRight, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
-                } else if (prevItem.x < currentSnakeItem.x) {
-                    this.ctx.drawImage(imageSnakeLastBodyLeft, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
-                } else if (prevItem.y < currentSnakeItem.y) {
-                    this.ctx.drawImage(imageSnakeLastBodyTop, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
-                } else if (prevItem.y > currentSnakeItem.y) {
-                    this.ctx.drawImage(imageSnakeLastBodyBottom, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
+
+                switch (true) {
+                    case prevItem.x > currentSnakeItem.x:
+                        image = imageSnakeLastBodyRight;
+                        break;
+                    case prevItem.x < currentSnakeItem.x:
+                        image = imageSnakeLastBodyLeft;
+                        break;
+                    case prevItem.y < currentSnakeItem.y:
+                        image = imageSnakeLastBodyTop;
+                        break;
+                    case prevItem.y > currentSnakeItem.y:
+                        image = imageSnakeLastBodyBottom;
+                        break;
                 }
+
+                this.ctx.drawImage(image, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
             }
 
             // determine body image
             else {
-                if (currentSnakeItem.x > prevItem.x && currentSnakeItem.y > nextItem.y || currentSnakeItem.x > nextItem.x && currentSnakeItem.y > prevItem.y) {
-                    this.ctx.drawImage(imageSnakeTurn3, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
-                } else if (currentSnakeItem.x < prevItem.x && currentSnakeItem.y < nextItem.y || currentSnakeItem.x < nextItem.x && currentSnakeItem.y < prevItem.y) {
-                    this.ctx.drawImage(imageSnakeTurn1, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
-                } else if (currentSnakeItem.x > nextItem.x && currentSnakeItem.y < prevItem.y || currentSnakeItem.x > prevItem.x && currentSnakeItem.y < nextItem.y) {
-                    this.ctx.drawImage(imageSnakeTurn2, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
-                } else if (currentSnakeItem.x < nextItem.x && currentSnakeItem.y > prevItem.y || currentSnakeItem.x < prevItem.x && currentSnakeItem.y > nextItem.y) {
-                    this.ctx.drawImage(imageSnakeTurn4, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
-                } else if (currentSnakeItem.x != prevItem.x) {
-                    this.ctx.drawImage(imageBodySnake, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
-                } else if (currentSnakeItem.y != prevItem.y) {
-                    this.ctx.drawImage(imageBodySnakeVertical, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
-                } else {
-                    this.ctx.drawImage(image, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
+
+                switch (true) {
+                    case currentSnakeItem.x > prevItem.x && currentSnakeItem.y > nextItem.y || currentSnakeItem.x > nextItem.x && currentSnakeItem.y > prevItem.y:
+                        image = imageSnakeTurn3;
+                        break;
+                    case currentSnakeItem.x < prevItem.x && currentSnakeItem.y < nextItem.y || currentSnakeItem.x < nextItem.x && currentSnakeItem.y < prevItem.y:
+                        image = imageSnakeTurn1;
+                        break;
+                    case currentSnakeItem.x > nextItem.x && currentSnakeItem.y < prevItem.y || currentSnakeItem.x > prevItem.x && currentSnakeItem.y < nextItem.y:
+                        image = imageSnakeTurn2;
+                        break;
+                    case currentSnakeItem.x < nextItem.x && currentSnakeItem.y > prevItem.y || currentSnakeItem.x < prevItem.x && currentSnakeItem.y > nextItem.y:
+                        image = imageSnakeTurn4;
+                        break;
+                    case currentSnakeItem.x != prevItem.x:
+                        image = imageBodySnake;
+                        break;
+                    case currentSnakeItem.y != prevItem.y:
+                        image = imageBodySnakeVertical;
+                        break;
                 }
+
+                this.ctx.drawImage(image, currentSnakeItem.x * this.gridSize, currentSnakeItem.y * this.gridSize, this.gridSize, this.gridSize);
             }
         }
     }
@@ -158,51 +180,54 @@ export default class Snake {
         }
     }
     addNextMove(e) {
-        // // @todo refactoriser
-        if (e.key == 'ArrowUp') {
-            if (this.nextsMoves[this.nextsMoves.length - 1] != 'bottom' && this.nextsMoves[this.nextsMoves.length - 1] != 'top') {
-                if ((this.direction === 'bottom' && this.nextsMoves.length > 0) || (this.direction === 'top' && this.nextsMoves.length > 0) || (this.direction === 'right') || (this.direction === 'left')) {
-                    this.nextsMoves.push('top')
-                } else {
-                    console.log('cant move top 2');
-                }
-            } else {
-                console.log('cant move top 1');
-            }
-        }
-        if (e.key == 'ArrowDown') {
-            if (this.nextsMoves[this.nextsMoves.length - 1] != 'bottom' && this.nextsMoves[this.nextsMoves.length - 1] != 'top') {
-                if ((this.direction === 'bottom' && this.nextsMoves.length > 0) || (this.direction === 'top' && this.nextsMoves.length > 0) || (this.direction === 'right') || (this.direction === 'left')) {
-                    this.nextsMoves.push('bottom')
-                } else {
-                    console.log('cant move bottom 2');
-                }
-            } else {
-                console.log('cant move bottom 1');
-            }
+        const autorisedMoves = [];
+        const unautorisedMoves = [];
+        let nextDirection;
+
+        switch (e.key) {
+            case 'ArrowUp':
+                nextDirection = 'top';
+                console.log('ArrowUp');
+                break;
+
+            case 'ArrowDown':
+                nextDirection = 'bottom';
+                console.log('ArrowDown');
+                break;
+
+            case 'ArrowRight':
+                nextDirection = 'right';
+                console.log('ArrowRight');
+                break;
+                
+            case 'ArrowLeft':
+                nextDirection = 'left';
+                console.log('ArrowLeft');
+                break;
         }
 
-        if (e.key == 'ArrowRight') {
-            if (this.nextsMoves[this.nextsMoves.length - 1] != 'left' && this.nextsMoves[this.nextsMoves.length - 1] != 'right') {
-                if ((this.direction === 'left' && this.nextsMoves.length > 0) || (this.direction === 'right' && this.nextsMoves.length > 0) || (this.direction === 'bottom') || (this.direction === 'top')) {
-                    this.nextsMoves.push('right')
-                } else {
-                    console.log('cant move right 2');
-                }
-            } else {
-                console.log('cant move right 1');
-            }
+        switch (this.direction) {
+            case 'bottom':
+                autorisedMoves.push('left', 'right')
+                unautorisedMoves.push('top', 'bottom')
+                break;
+            case 'top':
+                autorisedMoves.push('left', 'right')
+                unautorisedMoves.push('top', 'bottom')
+                break;
+            case 'right':
+                autorisedMoves.push('top', 'bottom')
+                unautorisedMoves.push('right', 'left')
+                break;
+            case 'left':
+                autorisedMoves.push('top', 'bottom')
+                unautorisedMoves.push('right', 'left')
+                break;
         }
 
-        if (e.key == 'ArrowLeft') {
-            if (this.nextsMoves[this.nextsMoves.length - 1] != 'left' && this.nextsMoves[this.nextsMoves.length - 1] != 'right') {
-                if ((this.direction === 'left' && this.nextsMoves.length > 0) || (this.direction === 'right' && this.nextsMoves.length > 0) || (this.direction === 'bottom') || (this.direction === 'top')) {
-                    this.nextsMoves.push('left')
-                } else {
-                    console.log('cant move left 2');
-                }
-            } else {
-                console.log('cant move left 1');
+        if (this.nextsMoves[this.nextsMoves.length - 1] != unautorisedMoves[0] && this.nextsMoves[this.nextsMoves.length - 1] != unautorisedMoves[1]) {
+            if ((this.direction === autorisedMoves[0] && this.nextsMoves.length > 0) || (this.direction === autorisedMoves[1] && this.nextsMoves.length > 0) || (this.direction === unautorisedMoves[0]) || (this.direction === unautorisedMoves[1])) {
+                this.nextsMoves.push(nextDirection)
             }
         }
     }
@@ -263,7 +288,7 @@ export default class Snake {
             const snakeItem = this.position[index];
             if (snakeItem.y >= this.canvasHeight / this.gridSize ||
                 snakeItem.y < 0 ||
-                snakeItem.x >= this.canvasWidth/ this.gridSize ||
+                snakeItem.x >= this.canvasWidth / this.gridSize ||
                 snakeItem.x < 0) {
                 return true;
             }
